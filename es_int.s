@@ -11,19 +11,19 @@
 * Definición de equivalencias
 *********************************
 
-MR1A    EQU     $effc01       * de modo A (escritura)
-SRA     EQU     $effc03       * de estado A (lectura)
-CRA     EQU     $effc05       * de control A (escritura)
-TBA     EQU     $effc07       * buffer transmision A (escritura)
-RBA     EQU     $effc07       * buffer recepcion A  (lectura)
-ACR   EQU   $effc09       * de control auxiliar
-IMR     EQU     $effc0B       * de mascara de interrupcion A (escritura)
-MR1B  EQU   $effc11     * de modo B (escritura)
-SRB   EQU   $effc13     * de estado B (lectura)
-CRB   EQU   $effc15     * de control B (escritura)
-TBB     EQU     $effc17       * buffer transmision B (escritura)
-RBB     EQU     $effc17       * buffer recepcion B (lectura)
-IVR     EQU     $effc19       * del vector de interrupción
+MR1A  EQU  $effc01  * de modo A (escritura)
+SRA   EQU  $effc03  * de estado A (lectura)
+CRA   EQU  $effc05  * de control A (escritura)
+TBA   EQU  $effc07  * buffer transmision A (escritura)
+RBA   EQU  $effc07  * buffer recepcion A  (lectura)
+ACR   EQU  $effc09  * de control auxiliar
+IMR   EQU  $effc0B  * de mascara de interrupcion A (escritura)
+MR1B  EQU  $effc11  * de modo B (escritura)
+SRB   EQU  $effc13  * de estado B (lectura)
+CRB   EQU  $effc15  * de control B (escritura)
+TBB   EQU  $effc17  * buffer transmision B (escritura)
+RBB   EQU  $effc17  * buffer recepcion B (lectura)
+IVR   EQU  $effc19  * del vector de interrupción
 
 * Zona de datos en memoria
 *********************************
@@ -45,51 +45,51 @@ finPB:      DS.B  4
 emptySA:    DS.B  1
 emptySB:    DS.B  1
 fullPA:     DS.B  1
-*fullPB:      DS.B  1
-flagSalto:    DS.B    1
+*fullPB:    DS.B  1
+flagSalto:  DS.B  1
 
 IMRcopia:
     DS.B  2
 
 **************************** INIT *************************************************************
 INIT:
-        MOVE.B          #%00000011,MR1A     * 8 bits por carac. en A y solicita una int. por carac.
-    MOVE.B          #%00000000,MR1A     * Eco desactivado en A
-    MOVE.B          #%00000011,MR1B     * 8 bits por caract. en B y solicita una int. por carac.
-    MOVE.B          #%00000000,MR1B     * Eco desactivado en B
-        MOVE.B          #%11001100,SRA      * Velocidad = 38400 bps.
-    MOVE.B          #%11001100,SRB    * Velocidad = 38400 bps.
-        MOVE.B          #%00000000,ACR      * Selección del primer conjunto de velocidades.
-        MOVE.B          #%00000101,CRA      * Transmision y recepcion activados en A.
-    MOVE.B          #%00000101,CRB      * Transmision y recepcion activados en B.
-    MOVE.B      #$40,IVR      * Vector de interrupción 40.
-    MOVE.B      #%00100010,IMR    * Habilitar las interrupciones
-    MOVE.B          #%00100010,IMRcopia * Habilitamos las interrupciones en la copia de IMR
-    LEA       RTI,A1        * Dirección de la tabla de vectores
-    MOVE.L          #$100,A2      * $100 es la dirección siguiente al V.I.
-    MOVE.L          A1,(A2)       * Actualización de la dirección de la tabla de vectores
-    LEA       buffSA,A1     * Dirección de buffSA -> A1
-    ADD.L       #1,A1
-    MOVE.L      A1,punSA      * punSA apunta al primero del buffSA
-    MOVE.L      A1,punSARTI     * puntero para la RTI
-    MOVE.B      #1,emptySA      * El buffSA inicialmente no está lleno
-    LEA       buffSB,A1     * Dirección de buffSB -> A1
-    ADD.L       #1,A1
-    MOVE.L      A1,punSB      * punSB apunta al primero del buffSB
-    MOVE.L      A1,punSBRTI     * puntero para la RTI
-    MOVE.B      #1,emptySB      * El buffSB inicialmente no está lleno
-    LEA       buffPA,A1     * Dirección de buffPA -> A1
-    ADD.L       #1,A1
-    MOVE.L      A1,punPA      * punPA apunta al primero del buffPA
-    MOVE.L      A1,punPARTI     * puntero para la RTI
-    MOVE.B      #0,fullPA     * El buffPA inicialmente no está lleno
-    LEA       buffPB,A1     * Dirección de buffPB -> A1
-    ADD.L       #1,A1
-    MOVE.L      A1,punPB      * punPB apunta al primero del buffPB
-    MOVE.L      A1,punPBRTI     * puntero para la RTI
-    *MOVE.B     #0,fullPB     * El buffPB inicialmente no está lleno
-    LEA       finPB,A1      * Dirección fin de buffPB -> A1
-    MOVE.L      A1,finPB      * finPB apunta al último elemento del buffPB
+    MOVE.B   #%00000011,MR1A      * 8 bits por carac. en A y solicita una int. por carac.
+    MOVE.B   #%00000000,MR1A      * Eco desactivado en A
+    MOVE.B   #%00000011,MR1B      * 8 bits por caract. en B y solicita una int. por carac.
+    MOVE.B   #%00000000,MR1B      * Eco desactivado en B
+    MOVE.B   #%11001100,SRA       * Velocidad = 38400 bps.
+    MOVE.B   #%11001100,SRB       * Velocidad = 38400 bps.
+    MOVE.B   #%00000000,ACR       * Selección del primer conjunto de velocidades.
+    MOVE.B   #%00000101,CRA       * Transmision y recepcion activados en A.
+    MOVE.B   #%00000101,CRB       * Transmision y recepcion activados en B.
+    MOVE.B   #$40,IVR             * Vector de interrupción 40.
+    MOVE.B   #%00100010,IMR       * Habilitar las interrupciones
+    MOVE.B   #%00100010,IMRcopia  * Habilitamos las interrupciones en la copia de IMR
+    LEA      RTI,A1               * Dirección de la tabla de vectores
+    MOVE.L   #$100,A2             * $100 es la dirección siguiente al V.I.
+    MOVE.L   A1,(A2)              * Actualización de la dirección de la tabla de vectores
+    LEA      buffSA,A1            * Dirección de buffSA -> A1
+    ADD.L    #1,A1
+    MOVE.L   A1,punSA             * punSA apunta al primero del buffSA
+    MOVE.L   A1,punSARTI          * puntero para la RTI
+    MOVE.B   #1,emptySA           * El buffSA inicialmente no está lleno
+    LEA      buffSB,A1            * Dirección de buffSB -> A1
+    ADD.L    #1,A1
+    MOVE.L   A1,punSB             * punSB apunta al primero del buffSB
+    MOVE.L   A1,punSBRTI          * puntero para la RTI
+    MOVE.B   #1,emptySB           * El buffSB inicialmente no está lleno
+    LEA      buffPA,A1            * Dirección de buffPA -> A1
+    ADD.L    #1,A1
+    MOVE.L   A1,punPA             * punPA apunta al primero del buffPA
+    MOVE.L   A1,punPARTI          * puntero para la RTI
+    MOVE.B   #0,fullPA            * El buffPA inicialmente no está lleno
+    LEA      buffPB,A1            * Dirección de buffPB -> A1
+    ADD.L    #1,A1
+    MOVE.L   A1,punPB             * punPB apunta al primero del buffPB
+    MOVE.L   A1,punPBRTI          * puntero para la RTI
+    *MOVE.B  #0,fullPB            * El buffPB inicialmente no está lleno
+    LEA      finPB,A1             * Dirección fin de buffPB -> A1
+    MOVE.L   A1,finPB             * finPB apunta al último elemento del buffPB
         RTS
 **************************** FIN INIT *********************************************************
 **************************** LEECAR **********************************************************
@@ -109,84 +109,84 @@ LEECAR:
 
 
 BUFF_RA:
-    MOVE.L    punSA,A2    * Cargamos el puntero que vamos a utlizar
-    MOVE.L    punSARTI,A4   * Cargamos el puntero con el que vamos a hacer la comprobación
-    LEA     buffSB,A3   * Cargamos fin de buffer
-    CMP.L     A2,A3
+    MOVE.L  punSA,A2     * Cargamos el puntero que vamos a utlizar
+    MOVE.L  punSARTI,A4  * Cargamos el puntero con el que vamos a hacer la comprobación
+    LEA     buffSB,A3    * Cargamos fin de buffer
+    CMP.L   A2,A3
     BEQ     RESET_RA
-    CMP.L     A2,A4
+    CMP.L   A2,A4
     BEQ     ES_VACIO
 BU_RAL:
-    MOVE.B    (A2)+,D0    * Metemos el caracter en D0 y lo avanzamos.
-    MOVE.L    A2,punSA    * Actualizamos puntero
-    BRA     LE_FIN      * Nos vamos a fin.
+    MOVE.B  (A2)+,D0  * Metemos el caracter en D0 y lo avanzamos.
+    MOVE.L  A2,punSA  * Actualizamos puntero
+    BRA     LE_FIN    * Nos vamos a fin.
 
 
 BUFF_TA:
-    MOVE.L    punPARTI,A2   * Cargamos el puntero que vamos a utlizar
-    MOVE.L    punPA,A4    * Cargamos el puntero para la comprobación
-    LEA     buffPB,A3   * Cargamos direccion de fin de buff
-    CMP.L     A2,A3
+    MOVE.L  punPARTI,A2  * Cargamos el puntero que vamos a utlizar
+    MOVE.L  punPA,A4     * Cargamos el puntero para la comprobación
+    LEA     buffPB,A3    * Cargamos direccion de fin de buff
+    CMP.L   A2,A3
     BEQ     RESET_TA
-    CMP.L     A2,A4
+    CMP.L   A2,A4
     BEQ     ES_VACIO
 BU_TAL:
-    MOVE.B    (A2)+,D0    * Metemos el caracter en D0 y lo avanzamos.
-    MOVE.L    A2,punPARTI   * Actualizamos puntero
-    BRA     LE_FIN      * Nos vamos a fin.
+    MOVE.B  (A2)+,D0     * Metemos el caracter en D0 y lo avanzamos.
+    MOVE.L  A2,punPARTI  * Actualizamos puntero
+    BRA     LE_FIN       * Nos vamos a fin.
 
 BUFF_RB:
-    MOVE.L    punSB,A2    * Cargamos el puntero que vamos a utlizar
-    MOVE.L    punSBRTI,A4   * Cargamos el puntero para la comprobación
-    LEA     buffPA,A3   * Final de buffPA
-    CMP.L     A2,A3
+    MOVE.L  punSB,A2     * Cargamos el puntero que vamos a utlizar
+    MOVE.L  punSBRTI,A4  * Cargamos el puntero para la comprobación
+    LEA     buffPA,A3    * Final de buffPA
+    CMP.L   A2,A3
     BEQ     RESET_RB
-    CMP.L     A2,A4
+    CMP.L   A2,A4
     BEQ     ES_VACIO
 BU_RBL:
-    MOVE.B    (A2)+,D0    * Metemos el caracter en D0 y lo avanzamos.
-    MOVE.L    A2,punSB    * Actualizamos puntero
+    MOVE.B  (A2)+,D0    * Metemos el caracter en D0 y lo avanzamos.
+    MOVE.L  A2,punSB    * Actualizamos puntero
     BRA     LE_FIN      * Nos vamos a fin.
 
 BUFF_TB:
-    MOVE.L    punPBRTI,A2   * Cargamos el puntero que vamos a utlizar
-    MOVE.L    punPB,A4    * Cargamos el puntero para la comprobación
-    LEA     finPB,A3    * Cargamos la dirección para la comprobación
-    CMP.L     A2,A3
+    MOVE.L  punPBRTI,A2  * Cargamos el puntero que vamos a utlizar
+    MOVE.L  punPB,A4     * Cargamos el puntero para la comprobación
+    LEA     finPB,A3     * Cargamos la dirección para la comprobación
+    CMP.L   A2,A3
     BEQ     RESET_TB
-    CMP.L     A2,A4
+    CMP.L   A2,A4
     BEQ     ES_VACIO
 BU_TBL:
-    MOVE.B    (A2)+,D0    * Metemos el caracter en D0 y lo avanzamos.
-    MOVE.L    A2,punPBRTI   * Actualizamos puntero
-    BRA     LE_FIN      * Nos vamos a fin.
+    MOVE.B  (A2)+,D0     * Metemos el caracter en D0 y lo avanzamos.
+    MOVE.L  A2,punPBRTI  * Actualizamos puntero
+    BRA     LE_FIN       * Nos vamos a fin.
 
 RESET_TA:
-    LEA buffPA,A5
-    MOVE.L A5,A2
-    BRA BU_TAL
+    LEA     buffPA,A5
+    MOVE.L  A5,A2
+    BRA     BU_TAL
 
 RESET_RA:
-    LEA buffSA,A5
-    MOVE.L A5,A2
-    BRA BU_RAL
+    LEA     buffSA,A5
+    MOVE.L  A5,A2
+    BRA     BU_RAL
 RESET_RB:
-    LEA buffSB,A5
-    MOVE.L A5,A2
-    BRA BU_RBL
+    LEA     buffSB,A5
+    MOVE.L  A5,A2
+    BRA     BU_RBL
 
 RESET_TB:
-    LEA buffPB,A5
-    MOVE.L A5,A2
-    BRA BU_TBL
+    LEA     buffPB,A5
+    MOVE.L  A5,A2
+    BRA     BU_TBL
 
 
 
 ES_VACIO:
-    MOVE.L    #$FFFFFFFF,D0 * Si no ERROR
+    MOVE.L  #$FFFFFFFF,D0 * Si no ERROR
     BRA     LE_FIN
 LE_FIN:
-    UNLK A6
+    UNLK    A6
     RTS
 
 **************************** FIN LEECAR ******************************************************
@@ -195,81 +195,84 @@ LE_FIN:
 
 ESCCAR:
     LINK    A6,#0
-    CMP.L     #0,D0
+    CMP.L   #0,D0
     BEQ     BU_RA
-    CMP.L     #1,D0
+    CMP.L   #1,D0
     BEQ     BU_RB
-    CMP.L     #2,D0
+    CMP.L   #2,D0
     BEQ     BU_TA
-    CMP.L     #3,D0
+    CMP.L   #3,D0
     BEQ     BU_TB
-    MOVE.L    #$FFFFFFFF,D0
+    MOVE.L  #$FFFFFFFF,D0
     BRA     ES_FIN
 
-BU_RA:  MOVE.L    punSARTI,A2   * Cargamos el puntero que vamos a utilizar
-    MOVE.L    punSA,A4    * Cargamos el puntero de SCAN
+BU_RA:
+    MOVE.L  punSARTI,A2   * Cargamos el puntero que vamos a utilizar
+    MOVE.L  punSA,A4    * Cargamos el puntero de SCAN
     LEA     buffSB,A3   * Cargamos el final del buff
-    CMP.L     A2,A3
+    CMP.L   A2,A3
     BEQ     RST_RA
 CONT_RA:
-    ADD.L     #1,A2
-    CMP.L     A2,A4
+    ADD.L   #1,A2
+    CMP.L   A2,A4
     BEQ     ES_LLENO
-    SUB.L     #1,A2
-    MOVE.B    D1,(A2)+
-    MOVE.L    A2,punSARTI
-    CLR.L     D0
+    SUB.L   #1,A2
+    MOVE.B  D1,(A2)+
+    MOVE.L  A2,punSARTI
+    CLR.L   D0
     BRA     ES_FIN
 
 
-BU_TA:  MOVE.L    punPA,A2    * Cargamos el puntero que vamos a utilizar
-    MOVE.L    punPARTI,A4   * Cargamos puntero de lectura
+BU_TA:
+    MOVE.L  punPA,A2    * Cargamos el puntero que vamos a utilizar
+    MOVE.L  punPARTI,A4   * Cargamos puntero de lectura
     LEA     buffPB,A3   * Cargamos direccion de final de buff.
-    CMP.L     A2,A3
+    CMP.L   A2,A3
     BEQ     RST_TA
 CONT_TA:
-    ADD.L     #1,A2
-    CMP.L     A2,A4
+    ADD.L   #1,A2
+    CMP.L   A2,A4
     BEQ     ES_LLENO
-    SUB.L     #1,A2
-    CMP.B     #$FF,D1
+    SUB.L   #1,A2
+    CMP.B   #$FF,D1
     BEQ     ES_FIN
-    MOVE.B    D1,(A2)+
-    MOVE.L    A2,punPA
-    CLR.L     D0
+    MOVE.B  D1,(A2)+
+    MOVE.L  A2,punPA
+    CLR.L   D0
     BRA     ES_FIN
 
-BU_RB:  MOVE.L    punSBRTI,A2   * Cargamos el puntero que vamos a utilizar
-    MOVE.L    punSB,A4    * Cargamos la dirección para comprobar si los punteros son iguales.
+BU_RB:
+    MOVE.L  punSBRTI,A2   * Cargamos el puntero que vamos a utilizar
+    MOVE.L  punSB,A4    * Cargamos la dirección para comprobar si los punteros son iguales.
     LEA     buffPA,A3   * Cargamos la direccion del fin de buff
-    CMP.L     A2,A3
+    CMP.L   A2,A3
     BEQ     RST_RB
 CONT_RB:
-    ADD.L     #1,A2
-    CMP.L     A2,A4
+    ADD.L   #1,A2
+    CMP.L   A2,A4
     BEQ     ES_LLENO
-    SUB.L     #1,A2
-    MOVE.B    D1,(A2)+
-    MOVE.L    A2,punSBRTI
-    CLR.L     D0
+    SUB.L   #1,A2
+    MOVE.B  D1,(A2)+
+    MOVE.L  A2,punSBRTI
+    CLR.L   D0
     BRA     ES_FIN
 
 BU_TB:
-    MOVE.L    punPB,A2    * Cargamos el puntero que vamos a utilizar
-    MOVE.L    punPBRTI,A4   * Cargamos la dirección para comprobar si estamos al final del buff.
+    MOVE.L  punPB,A2    * Cargamos el puntero que vamos a utilizar
+    MOVE.L  punPBRTI,A4   * Cargamos la dirección para comprobar si estamos al final del buff.
     LEA     finPB,A3    * Cargamos direccion de find e puntero
-    CMP.L     A2,A3
+    CMP.L   A2,A3
     BEQ     RST_TB
 CONT_TB:
-    ADD.L     #1,A2
-    CMP.L     A2,A4
+    ADD.L   #1,A2
+    CMP.L   A2,A4
     BEQ     ES_LLENO
-    SUB.L     #1,A2
-    CMP.B     #$FF,D1
+    SUB.L   #1,A2
+    CMP.B   #$FF,D1
     BEQ     ES_FIN
-    MOVE.B    D1,(A2)+
-    MOVE.L    A2,punPB
-    CLR.L     D0
+    MOVE.B  D1,(A2)+
+    MOVE.L  A2,punPB
+    CLR.L   D0
     BRA     ES_FIN
 
     **************
@@ -277,28 +280,28 @@ CONT_TB:
 
 RST_TA:
     LEA     buffPA,A5
-    MOVE.L    A5,A2
-    BRA CONT_TA
+    MOVE.L  A5,A2
+    BRA     CONT_TA
 
 RST_RA:
-    LEA buffSA,A5
-    MOVE.L A5,A2
-    BRA CONT_RA
+    LEA     buffSA,A5
+    MOVE.L  A5,A2
+    BRA     CONT_RA
 RST_RB:
-    LEA buffSB,A5
-    MOVE.L A5,A2
-    BRA CONT_RB
+    LEA     buffSB,A5
+    MOVE.L  A5,A2
+    BRA     CONT_RB
 
 RST_TB:
-    LEA buffPB,A5
-    MOVE.L A5,A2
-    BRA CONT_TB
+    LEA     buffPB,A5
+    MOVE.L  A5,A2
+    BRA     CONT_TB
 
 ES_LLENO:
-    MOVE.L    #$FFFFFFFF,D0 * Si no ERROR
+    MOVE.L  #$FFFFFFFF,D0 * Si no ERROR
     BRA     ES_FIN
 ES_FIN:
-    UNLK A6
+    UNLK    A6
     RTS
 
 **************************** ESCCAR ************************************************************
